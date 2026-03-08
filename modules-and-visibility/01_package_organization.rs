@@ -35,9 +35,25 @@ restaurant/
 
 // This would be lib.rs in a library crate
 pub mod restaurant {
-    pub mod front_of_house;
-    pub mod back_of_house;
-    
+    pub mod front_of_house {
+        pub mod hosting {
+            pub fn add_to_waitlist() { println!("Adding customer to waitlist"); }
+            pub fn seat_at_table()   { println!("Seating customer at table"); }
+        }
+        pub mod serving {
+            pub fn take_order()  { println!("Taking order"); }
+            pub fn serve_order() { println!("Serving order"); }
+        }
+        pub mod menu {
+            pub struct MenuItem { pub name: String, pub price: f64 }
+            pub enum MenuCategory { Appetizer, MainCourse, Dessert, Beverage }
+        }
+    }
+    pub mod back_of_house {
+        pub mod kitchen {
+            pub fn prepare_order() { println!("Preparing order"); }
+        }
+    }
     pub use front_of_house::hosting;
     pub use back_of_house::kitchen;
 }
@@ -47,25 +63,25 @@ pub use restaurant::front_of_house::menu::{MenuItem, MenuCategory};
 pub use restaurant::hosting;
 
 // Crate-level documentation
-//! # Restaurant Library
-//! 
-//! This crate provides functionality for managing a restaurant,
-//! including order management, menu handling, and customer service.
-//! 
-//! ## Examples
-//! 
-//! ```
-//! use restaurant::hosting;
-//! use restaurant::{MenuItem, MenuCategory};
-//! 
-//! hosting::add_to_waitlist();
-//! 
-//! let item = MenuItem::new(
-//!     "Pasta".to_string(),
-//!     12.99,
-//!     MenuCategory::MainCourse
-//! );
-//! ```
+// # Restaurant Library
+// 
+// This crate provides functionality for managing a restaurant,
+// including order management, menu handling, and customer service.
+// 
+// ## Examples
+// 
+// ```
+// use restaurant::hosting;
+// use restaurant::{MenuItem, MenuCategory};
+// 
+// hosting::add_to_waitlist();
+// 
+// let item = MenuItem::new(
+//     "Pasta".to_string(),
+//     12.99,
+//     MenuCategory::MainCourse
+// );
+// ```
 
 // Example of how main.rs would use the library
 fn main() {

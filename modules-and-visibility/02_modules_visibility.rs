@@ -93,3 +93,10 @@ pub mod menu {
 pub use menu::{MenuItem, MenuCategory};
 pub use hosting::add_to_waitlist;
 pub use serving::take_order;
+
+fn main() {
+    hosting::add_to_waitlist();
+    hosting::seat_at_table();
+    serving::full_service();
+    println!("Tax rate: {}", menu::TAX_RATE);
+}

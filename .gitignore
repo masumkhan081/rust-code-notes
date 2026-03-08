@@ -1,1 +1,10 @@
 /target
+*.exe
+*.out
+*.bin
+.DS_Store
+# compiled note binaries (rustc output)
+ownership_demo
+lifetimes
+pattern
+src/main

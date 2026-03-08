@@ -1,0 +1,321 @@
+[package]
+name = "notes"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+
+# ── async-programming ────────────────────────────────────────────────────────
+[[bin]]
+name = "async_basics"
+path = "../async-programming/01_async_basics.rs"
+
+[[bin]]
+name = "async_edge_cases"
+path = "../async-programming/02_async_edge_cases.rs"
+
+[[bin]]
+name = "async_interview"
+path = "../async-programming/03_async_interview_questions.rs"
+
+[[bin]]
+name = "async_spawn_send_static"
+path = "../async-programming/04_spawn_send_static_traps.rs"
+
+[[bin]]
+name = "async_lock_across_await"
+path = "../async-programming/05_lock_across_await_pitfall.rs"
+
+# ── memory-runtime ────────────────────────────────────────────────────────────
+[[bin]]
+name = "drop_order_raii"
+path = "../memory-runtime/01_drop_order_raii.rs"
+
+[[bin]]
+name = "vec_realloc"
+path = "../memory-runtime/02_vec_realloc_invalidation.rs"
+
+# ── collection ───────────────────────────────────────────────────────────────
+[[bin]]
+name = "collection_basics"
+path = "../collection/01_collection_basics.rs"
+
+[[bin]]
+name = "collection_edge_cases"
+path = "../collection/02_collection_edge_cases.rs"
+
+[[bin]]
+name = "collection_interview"
+path = "../collection/03_collection_interview.rs"
+
+# ── concurrency ──────────────────────────────────────────────────────────────
+[[bin]]
+name = "threads_basics"
+path = "../concurrency/01_threads_basics.rs"
+
+[[bin]]
+name = "shared_state"
+path = "../concurrency/02_shared_state.rs"
+
+[[bin]]
+name = "channels"
+path = "../concurrency/03_channels.rs"
+
+[[bin]]
+name = "concurrency_edge_cases"
+path = "../concurrency/04_concurrency_edge_cases.rs"
+
+[[bin]]
+name = "concurrency_interview"
+path = "../concurrency/05_concurrency_interview.rs"
+
+[[bin]]
+name = "atomics_memory_order"
+path = "../concurrency/06_atomics_memory_order.rs"
+
+[[bin]]
+name = "once_lock_singleton"
+path = "../concurrency/07_once_lock_singleton.rs"
+
+[[bin]]
+name = "scoped_threads"
+path = "../concurrency/08_scoped_threads_borrowing.rs"
+
+# ── error-handling ────────────────────────────────────────────────────────────
+[[bin]]
+name = "error_basics"
+path = "../error-handling/01_error_basics.rs"
+
+[[bin]]
+name = "error_edge_cases"
+path = "../error-handling/02_error_edge_cases.rs"
+
+[[bin]]
+name = "error_interview"
+path = "../error-handling/03_error_interview.rs"
+
+# ── file-handling ─────────────────────────────────────────────────────────────
+[[bin]]
+name = "file_basics"
+path = "../file-handling/01_file_basics.rs"
+
+[[bin]]
+name = "file_edge_cases"
+path = "../file-handling/02_file_edge_cases.rs"
+
+[[bin]]
+name = "file_interview"
+path = "../file-handling/03_file_interview.rs"
+
+# ── function-module ───────────────────────────────────────────────────────────
+[[bin]]
+name = "function_basics"
+path = "../function-module/01_function_basics.rs"
+
+[[bin]]
+name = "function_edge_cases"
+path = "../function-module/02_function_edge_cases.rs"
+
+[[bin]]
+name = "function_interview"
+path = "../function-module/03_function_interview.rs"
+
+# ── iterators-and-closures ────────────────────────────────────────────────────
+[[bin]]
+name = "iterators"
+path = "../iterators-and-closures/01_iterators.rs"
+
+[[bin]]
+name = "closures"
+path = "../iterators-and-closures/02_closures.rs"
+
+[[bin]]
+name = "iter_closure_edge_cases"
+path = "../iterators-and-closures/03_iterators_closure_edge_cases.rs"
+
+[[bin]]
+name = "iter_closure_interview"
+path = "../iterators-and-closures/04_iterators_closure_interview.rs"
+
+# ── macros ────────────────────────────────────────────────────────────────────
+[[bin]]
+name = "declarative_macros"
+path = "../macros/01_declarative_macros.rs"
+
+[[bin]]
+name = "procedural_macros"
+path = "../macros/02_procedural_macros.rs"
+
+[[bin]]
+name = "macro_edge_cases"
+path = "../macros/03_macro_edge_cases.rs"
+
+[[bin]]
+name = "macro_interview"
+path = "../macros/04_macro_interview.rs"
+
+# ── modules-and-visibility ────────────────────────────────────────────────────
+[[bin]]
+name = "package_organization"
+path = "../modules-and-visibility/01_package_organization.rs"
+
+[[bin]]
+name = "modules_visibility"
+path = "../modules-and-visibility/02_modules_visibility.rs"
+
+[[bin]]
+name = "module_usage_example"
+path = "../modules-and-visibility/03_module_usage_example.rs"
+
+[[bin]]
+name = "module_interview"
+path = "../modules-and-visibility/04_module_interview.rs"
+
+# ── ownership-borrowing-lifetimes ─────────────────────────────────────────────
+[[bin]]
+name = "ownership"
+path = "../ownership-borrowing-lifetimes/01_ownership.rs"
+
+[[bin]]
+name = "borrowing"
+path = "../ownership-borrowing-lifetimes/02_borrowing.rs"
+
+[[bin]]
+name = "lifetimes"
+path = "../ownership-borrowing-lifetimes/03_lifetimes.rs"
+
+[[bin]]
+name = "ownership_edge_cases"
+path = "../ownership-borrowing-lifetimes/04_ownership_edge_cases.rs"
+
+[[bin]]
+name = "ownership_interview"
+path = "../ownership-borrowing-lifetimes/05_ownership_interview.rs"
+
+[[bin]]
+name = "partial_moves_take"
+path = "../ownership-borrowing-lifetimes/06_partial_moves_take.rs"
+
+[[bin]]
+name = "self_referential_fix"
+path = "../ownership-borrowing-lifetimes/07_self_referential_fix_with_index.rs"
+
+# ── rust-basics ───────────────────────────────────────────────────────────────
+[[bin]]
+name = "rb_control_flow"
+path = "../rust-basics/control_flow.rs"
+
+[[bin]]
+name = "rb_data_types"
+path = "../rust-basics/data_types.rs"
+
+[[bin]]
+name = "rb_error_handling"
+path = "../rust-basics/error_handling.rs"
+
+[[bin]]
+name = "rb_functions"
+path = "../rust-basics/functions.rs"
+
+[[bin]]
+name = "rb_ownership_borrowing"
+path = "../rust-basics/ownership_borrowing.rs"
+
+[[bin]]
+name = "rb_structs_enums"
+path = "../rust-basics/structs_enums.rs"
+
+[[bin]]
+name = "rb_variables"
+path = "../rust-basics/variables.rs"
+
+# ── smart-pointers ────────────────────────────────────────────────────────────
+[[bin]]
+name = "box_ptr"
+path = "../smart-pointers/01_box.rs"
+
+[[bin]]
+name = "rc_ptr"
+path = "../smart-pointers/02_rc.rs"
+
+[[bin]]
+name = "refcell"
+path = "../smart-pointers/03_refcell.rs"
+
+[[bin]]
+name = "smart_pointer_edge_cases"
+path = "../smart-pointers/04_smart_pointer_edge_cases.rs"
+
+[[bin]]
+name = "smart_pointer_interview"
+path = "../smart-pointers/05_smart_pointer_interview.rs"
+
+# ── struct-enum ───────────────────────────────────────────────────────────────
+[[bin]]
+name = "struct_enum_basics"
+path = "../struct-enum/01_struct_enum_basics.rs"
+
+[[bin]]
+name = "struct_enum_edge_cases"
+path = "../struct-enum/02_struct_enum_edge_cases.rs"
+
+[[bin]]
+name = "struct_enum_interview"
+path = "../struct-enum/03_struct_enum_interview.rs"
+
+# ── traits-and-generics ───────────────────────────────────────────────────────
+[[bin]]
+name = "generics"
+path = "../traits-and-generics/01_generics.rs"
+
+[[bin]]
+name = "traits"
+path = "../traits-and-generics/02_traits.rs"
+
+[[bin]]
+name = "traits_edge_cases"
+path = "../traits-and-generics/03_traits_edge_cases.rs"
+
+[[bin]]
+name = "traits_interview"
+path = "../traits-and-generics/04_traits_interview.rs"
+
+[[bin]]
+name = "orphan_rule_newtype"
+path = "../traits-and-generics/05_orphan_rule_newtype.rs"
+
+[[bin]]
+name = "object_safety"
+path = "../traits-and-generics/06_object_safety.rs"
+
+# ── types-and-control-flow ────────────────────────────────────────────────────
+[[bin]]
+name = "arrays"
+path = "../types-and-control-flow/01_arrays.rs"
+
+[[bin]]
+name = "slices"
+path = "../types-and-control-flow/02_slices.rs"
+
+[[bin]]
+name = "types_edge_cases"
+path = "../types-and-control-flow/03_types_edge_cases.rs"
+
+[[bin]]
+name = "types_interview"
+path = "../types-and-control-flow/04_types_interview.rs"
+
+# ── unsafe-rust ───────────────────────────────────────────────────────────────
+[[bin]]
+name = "unsafe_basics"
+path = "../unsafe-rust/01_unsafe_basics.rs"
+
+[[bin]]
+name = "unsafe_ffi"
+path = "../unsafe-rust/02_ffi.rs"
+
+[[bin]]
+name = "unsafe_interview"
+path = "../unsafe-rust/03_unsafe_interview.rs"

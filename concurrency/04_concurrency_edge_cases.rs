@@ -36,7 +36,7 @@ fn demo_poisoned_mutex() {
             let data = poisoned.into_inner();
             println!("Recovered data: {}", data);
         }
-    }
+    };
 }
 
 // Unused to prevent hanging the notes run

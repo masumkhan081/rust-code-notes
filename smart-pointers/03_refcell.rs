@@ -201,7 +201,7 @@ fn safe_runtime_borrowing() {
         Err(e) => {
             println!("Failed to borrow: {:?}", e);
         }
-    }
+    };
 }
 
 // Performance comparison: RefCell vs regular references

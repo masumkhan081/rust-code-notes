@@ -159,7 +159,7 @@ fn result_demo() {
     
     // Using or_else for fallback
     let result1 = divide(10.0, 0.0)
-        .or_else(|_| Ok(0.0)); // Fallback to 0.0 on error
+        .or_else(|_| Ok::<f64, String>(0.0)); // Fallback to 0.0 on error
     
     println!("With fallback: {:?}", result1);
 }
