@@ -23,16 +23,16 @@ fn main() {
     println!("float point: ({}, {})", float.x, float.y);
     println!("mixed point: ({}, {})", mixed.x, mixed.y);
     
-    // Generic methods
-    let p1 = Point { x: 5, y: 10.4 };
-    let p2 = Point { x: "Hello", y: 'c' };
-    let p3 = p1.mixup(p2);
-    println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
-    
-    // Generic enums
-    let some_number = Some(5);
-    let some_string = Some("a string");
-    let absent_number: Option<i32> = None;
+    // Generic methods on PointMixed
+    let pm1 = PointMixed { x: 5, y: 10.4 };
+    let pm2 = PointMixed { x: "Hello", y: 'c' };
+    let pm3 = pm1.mixup(pm2);
+    println!("pm3.x = {}, pm3.y = {}", pm3.x, pm3.y);
+
+    // Generic enums (std)
+    let some_number: std::option::Option<i32> = Some(5);
+    let some_string: std::option::Option<&str> = Some("a string");
+    let absent_number: std::option::Option<i32> = None;
     
     match some_number {
         Some(value) => println!("Got a value: {}", value),
@@ -115,16 +115,8 @@ impl<T, U> PointMixed<T, U> {
     }
 }
 
-// Generic enums (standard library examples)
-enum Option<T> {
-    Some(T),
-    None,
-}
-
-enum Result<T, E> {
-    Ok(T),
-    Err(E),
-}
+// NOTE: std already provides Option<T> and Result<T,E>; defining them here
+// would shadow the prelude — use std::option::Option / std::result::Result directly.
 
 // Custom generic enum
 enum Either<L, R> {
@@ -178,16 +170,18 @@ where
 
 // Complex where clauses
 fn where_clause_example() {
-    let container = Container { value: 42 };
-    complex_function(&container, &container);
+    // Container<T> doesn't derive Debug/Display, so pass plain values instead.
+    let a = 42_i32;
+    let b = "hello";
+    complex_function(&a, &b);
 }
 
 struct Container<T> {
     value: T,
 }
 
-fn complex_function<T, U>(item1: &T, item2: &U) 
-where 
+fn complex_function<T, U>(item1: &T, item2: &U)
+where
     T: std::fmt::Display + std::fmt::Debug + Clone,
     U: std::fmt::Display + std::fmt::Debug + Clone,
 {

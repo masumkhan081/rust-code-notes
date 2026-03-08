@@ -1,316 +1,111 @@
-// Traits in Rust
-// ===============
-// Traits define shared behavior in an abstract way. They're similar to interfaces in other languages.
+// Traits in Rust (compile-safe + senior traps covered)
+// ====================================================
 
-use std::fmt::Display;
+use std::fmt::{self, Debug, Display};
 
 fn main() {
-    // Using traits with different types
     let tweet = Tweet {
-        username: String::from("horse_ebooks"),
-        content: String::from("of course, as you probably already know, people"),
-        reply: false,
-        retweet: false,
+        username: "horse_ebooks".to_string(),
+        content: "people".to_string(),
     };
-    
+
     let article = NewsArticle {
-        headline: String::from("Penguins win the Stanley Cup Championship!"),
-        location: String::from("Pittsburgh, PA, USA"),
-        author: String::from("Iceburgh"),
-        content: String::from("The Pittsburgh Penguins once again are the best hockey team in the NHL."),
+        headline: "Rust wins again".to_string(),
+        author: "Ferris".to_string(),
     };
-    
-    // Calling trait methods
-    println!("1 new tweet: {}", tweet.summarize());
-    println!("New article available! {}", article.summarize());
-    
-    // Default implementation
-    println!("Default summary: {}", article.summarize_default());
-    
-    // Trait bounds
+
+    println!("tweet: {}", tweet.summarize());
+    println!("article: {}", article.summarize());
+
     notify(&tweet);
     notify(&article);
-    
-    // Multiple trait bounds
+
     notify_display(&tweet);
-    
-    // Advanced trait bounds
-    some_function(&tweet, &article);
-    
-    // Trait objects
-    trait_objects_example();
-    
-    // Associated types
-    associated_types_example();
+
+    trait_object_demo();
+    iterator_assoc_type_demo();
+    orphan_rule_preview();
 }
 
-// Define a trait
 trait Summary {
-    // Method signature that implementors must define
     fn summarize(&self) -> String;
-    
-    // Default implementation
-    fn summarize_default(&self) -> String {
-        String::from("(Read more...)")
-    }
-    
-    // Default implementation that calls other methods
-    fn summarize_author(&self) -> String;
-    
-    fn summarize_with_author(&self) -> String {
-        format!("(Read more from {}...)", self.summarize_author())
-    }
 }
 
-// Implement trait for a struct
-pub struct NewsArticle {
-    pub headline: String,
-    pub location: String,
-    pub author: String,
-    pub content: String,
+#[derive(Clone, Debug)]
+struct Tweet {
+    username: String,
+    content: String,
 }
 
-impl Summary for NewsArticle {
-    fn summarize(&self) -> String {
-        format!("{}, by {} ({})", self.headline, self.author, self.location)
-    }
-    
-    fn summarize_author(&self) -> String {
-        format!("@{}", self.author)
-    }
-}
-
-pub struct Tweet {
-    pub username: String,
-    pub content: String,
-    pub reply: bool,
-    pub retweet: bool,
+#[derive(Clone, Debug)]
+struct NewsArticle {
+    headline: String,
+    author: String,
 }
 
 impl Summary for Tweet {
     fn summarize(&self) -> String {
         format!("{}: {}", self.username, self.content)
     }
-    
-    fn summarize_author(&self) -> String {
-        format!("@{}", self.username)
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {}", self.headline, self.author)
     }
 }
 
-// Traits as parameters
+impl Display for Tweet {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(&self.summarize())
+    }
+}
+
 fn notify(item: &impl Summary) {
-    println!("Breaking news! {}", item.summarize());
+    println!("notify: {}", item.summarize());
 }
 
-// Trait bound syntax (longer form)
-fn notify_verbose<T: Summary>(item: &T) {
-    println!("Breaking news! {}", item.summarize());
-}
-
-// Multiple trait bounds
 fn notify_display(item: &(impl Summary + Display)) {
-    println!("Breaking news! {}", item.summarize());
+    println!("notify_display: {}", item);
 }
 
-// Multiple trait bounds with generic type
-fn notify_multiple<T: Summary + Display>(item: &T) {
-    println!("Breaking news! {}", item.summarize());
-}
+fn trait_object_demo() {
+    // dyn Trait is runtime polymorphism (vtable)
+    let items: Vec<Box<dyn Summary>> = vec![
+        Box::new(Tweet {
+            username: "a".to_string(),
+            content: "b".to_string(),
+        }),
+        Box::new(NewsArticle {
+            headline: "h".to_string(),
+            author: "x".to_string(),
+        }),
+    ];
 
-// Where clauses for cleaner syntax
-fn some_function<T, U>(t: &T, u: &U) -> i32
-where
-    T: Display + Clone,
-    U: Clone + Debug,
-{
-    // function body
-    0
-}
-
-// Returning types that implement traits
-fn returns_summarizable() -> impl Summary {
-    Tweet {
-        username: String::from("horse_ebooks"),
-        content: String::from("of course, as you probably already know, people"),
-        reply: false,
-        retweet: false,
+    for it in items {
+        println!("dyn Summary => {}", it.summarize());
     }
 }
 
-// Conditional implementation based on trait bounds
-struct Pair<T> {
-    x: T,
-    y: T,
-}
+fn iterator_assoc_type_demo() {
+    // Associated types are the real Iterator pattern
+    struct Counter(u32);
 
-impl<T> Pair<T> {
-    fn new(x: T, y: T) -> Self {
-        Self { x, y }
-    }
-}
-
-impl<T: Display + PartialOrd> Pair<T> {
-    fn cmp_display(&self) {
-        if self.x >= self.y {
-            println!("The largest member is x = {}", self.x);
-        } else {
-            println!("The largest member is y = {}", self.y);
+    impl Iterator for Counter {
+        type Item = u32;
+        fn next(&mut self) -> Option<Self::Item> {
+            let n = self.0;
+            self.0 += 1;
+            Some(n)
         }
     }
+
+    let sum: u32 = Counter(1).take(5).sum();
+    println!("iterator sum = {sum}");
 }
 
-// Trait objects for dynamic dispatch
-fn trait_objects_example() {
-    let screen = Screen {
-        components: vec![
-            Box::new(SelectBox {
-                width: 75,
-                height: 10,
-                options: vec![
-                    String::from("Yes"),
-                    String::from("Maybe"),
-                    String::from("No"),
-                ],
-            }),
-            Box::new(Button {
-                width: 50,
-                height: 10,
-                label: String::from("OK"),
-            }),
-        ],
-    };
-    
-    screen.run();
+fn orphan_rule_preview() {
+    // You cannot implement a foreign trait for a foreign type:
+    // impl Display for Vec<i32> { ... }  // <- orphan rule (won't compile)
+    // Newtype solves it (see 05_orphan_rule_newtype.rs).
 }
-
-trait Draw {
-    fn draw(&self);
-}
-
-struct Screen {
-    pub components: Vec<Box<dyn Draw>>,
-}
-
-impl Screen {
-    pub fn run(&self) {
-        for component in self.components.iter() {
-            component.draw();
-        }
-    }
-}
-
-struct Button {
-    pub width: u32,
-    pub height: u32,
-    pub label: String,
-}
-
-impl Draw for Button {
-    fn draw(&self) {
-        println!("Drawing button: {} ({}x{})", self.label, self.width, self.height);
-    }
-}
-
-struct SelectBox {
-    width: u32,
-    height: u32,
-    options: Vec<String>,
-}
-
-impl Draw for SelectBox {
-    fn draw(&self) {
-        println!("Drawing select box ({}x{}) with options: {:?}", self.width, self.height, self.options);
-    }
-}
-
-// Associated types
-trait Iterator {
-    type Item; // Associated type
-    
-    fn next(&mut self) -> Option<Self::Item>;
-}
-
-struct Counter {
-    current: u32,
-    max: u32,
-}
-
-impl Counter {
-    fn new(max: u32) -> Counter {
-        Counter { current: 0, max }
-    }
-}
-
-impl Iterator for Counter {
-    type Item = u32;
-    
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.current < self.max {
-            let current = self.current;
-            self.current += 1;
-            Some(current)
-        } else {
-            None
-        }
-    }
-}
-
-fn associated_types_example() {
-    let mut counter = Counter::new(5);
-    while let Some(value) = counter.next() {
-        println!("Counter: {}", value);
-    }
-}
-
-// Operator overloading with traits
-use std::ops::Add;
-
-#[derive(Debug, Copy, Clone, PartialEq)]
-struct Point {
-    x: i32,
-    y: i32,
-}
-
-impl Add for Point {
-    type Output = Point;
-    
-    fn add(self, other: Point) -> Point {
-        Point {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-}
-
-fn operator_overloading_example() {
-    let p1 = Point { x: 1, y: 0 };
-    let p2 = Point { x: 2, y: 3 };
-    let p3 = p1 + p2;
-    println!("{:?} + {:?} = {:?}", p1, p2, p3);
-}
-
-// Supertraits
-trait OutlinePrint: Display {
-    fn outline_print(&self) {
-        let output = self.to_string();
-        let len = output.len();
-        println!("{}", "*".repeat(len + 4));
-        println!("*{}*", " ".repeat(len + 2));
-        println!("* {} *", output);
-        println!("*{}*", " ".repeat(len + 2));
-        println!("{}", "*".repeat(len + 4));
-    }
-}
-
-impl Display for Point {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "({}, {})", self.x, self.y)
-    }
-}
-
-impl OutlinePrint for Point {}
-
-use std::fmt;
-
-// Need to import Debug for the derive
-use std::fmt::Debug;
